@@ -24,13 +24,23 @@ const {GLib, GObject, Adw} = imports.gi;
 var FlatsealApplicationRow = GObject.registerClass({
     GTypeName: 'FlatsealApplicationRow',
     Template: 'resource:///com/github/tchx84/Flatseal/widgets/applicationRow.ui',
-    InternalChildren: ['icon'],
+    InternalChildren: ['icon', 'modifiedIndicator'],
+    Properties: {
+        modified: GObject.ParamSpec.boolean(
+            'modified',
+            'modified',
+            'modified',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT,
+            false,
+        ),
+    },
 }, class FlatsealApplicationRow extends Adw.ActionRow {
     _init(appId, appName, appIconName) {
         super._init();
         this._icon.set_from_icon_name(appIconName);
         this.set_title(GLib.markup_escape_text(appName, -1));
         this.set_subtitle(appId);
+        this._modified = false;
     }
 
     get appId() {
@@ -39,5 +49,22 @@ var FlatsealApplicationRow = GObject.registerClass({
 
     get appName() {
         return this.get_title();
+    }
+
+    set modified(modified) {
+        if (this._modified === modified)
+            return;
+
+        this._modified = modified;
+        this._modifiedIndicator.visible = modified;
+
+        if (modified)
+            this._modifiedIndicator.set_tooltip_text(_('Permissions modified'));
+        else
+            this._modifiedIndicator.set_tooltip_text('');
+    }
+
+    get modified() {
+        return this._modified;
     }
 });

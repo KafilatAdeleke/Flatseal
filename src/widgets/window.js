@@ -161,6 +161,7 @@ var FlatsealWindow = GObject.registerClass({
         allApplications.forEach(app => {
             iconTheme.add_search_path(app.appThemePath);
             const row = new FlatsealApplicationRow(app.appId, app.appName, app.appIconName);
+            row.modified = this._permissions.constructor.hasUserModifications(app.appId);
             this._applicationsListBox.append(row);
 
             if (app.appId === this._settings.getSelectedAppId())

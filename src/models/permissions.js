@@ -454,6 +454,28 @@ var FlatpakPermissionsModel = GObject.registerClass({
         const [group] = property.split('-');
         return MODELS[group].constructor.getGroup();
     }
+
+    static hasUserModifications(appId) {
+        if (isGlobalOverride(appId))
+            return false;
+
+        const apps = applications.getDefault();
+        const overridesPath = GLib.build_filenamev([
+            apps.userPath, 'overrides', appId,
+        ]);
+
+        if (GLib.access(overridesPath, 0) !== 0)
+            return false;
+
+        const keyFile = new GLib.KeyFile();
+        try {
+            keyFile.load_from_file(overridesPath, 0);
+            const [groups] = keyFile.get_groups();
+            return groups.length > 0;
+        } catch (err) {
+            return false;
+        }
+    }
 });
 
 

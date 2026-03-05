@@ -2,6 +2,11 @@
     padding: 3px 0px;
 }
 
+.navigation-sidebar row .modified-indicator {
+    color: @accent_color;
+    margin-right: 8px;
+}
+
 .permissions clamp {
     margin-bottom: 25px;
 }

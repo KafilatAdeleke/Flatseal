@@ -16,6 +16,17 @@
         </style>
       </object>
     </child>
+    <child type="suffix">
+      <object class="GtkImage" id="modifiedIndicator">
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="icon-name">bullet-symbolic</property>
+        <property name="visible">False</property>
+        <style>
+          <class name="modified-indicator"/>
+        </style>
+      </object>
+    </child>
     <style>
       <class name="row"/>
     </style>
